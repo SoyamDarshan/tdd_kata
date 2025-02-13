@@ -22,7 +22,10 @@ class TestCalculator(unittest.TestCase):
         assert add("//;\n1;999;3;4") == 1007
         assert add("1001\n,\n2\n") == 2
         assert add("1001\n,\n2000\n") == 0
-
+        assert add("//[;**]\n1;**2;**3;**4") == 10
+        assert add("//[;**][;*]\n1;**2;*3;**4") == 10
+        assert add("//[;**][**]\n1**2;**3**4") == 10
+        assert add("//[;**][**][***]\n1;**2**3***4") == 10
 
     def test_parse_string_nums(self):
         assert parse_string_nums("") == [0]
@@ -39,6 +42,10 @@ class TestCalculator(unittest.TestCase):
         assert parse_string_nums("\n1;999;3;4", delimiter=";") == [1, 999, 3, 4]
         assert parse_string_nums("1001\n,\n2\n") == [2]
         assert parse_string_nums("1001\n,\n2000\n") == []
+        assert parse_string_nums("1;**2;**3;**4", delimiter=";\*\*") == [1, 2, 3, 4]
+        assert parse_string_nums("1;**2;*3;**4", delimiter=";\*\*|;\*") == [1, 2, 3, 4]
+        assert parse_string_nums("1**2;**3**4", delimiter=";\*\*|\*\*") == [1, 2, 3, 4]
+        assert parse_string_nums("1;**2**3***4", delimiter=";\*\*|\*\*\*|\*\*") == [1, 2, 3, 4]
 
     def test_get_delimiter_nums_string(self):
         assert get_delimiter_nums_string("") == (None, "")
@@ -55,6 +62,10 @@ class TestCalculator(unittest.TestCase):
         assert get_delimiter_nums_string("//;\n1;999;3;4") == (";", "1;999;3;4")
         assert get_delimiter_nums_string("1001\n,\n2\n") == (None, "1001\n,\n2\n")
         assert get_delimiter_nums_string("1001\n,\n2000\n") == (None, "1001\n,\n2000\n")
+        assert get_delimiter_nums_string("//[;**]\n1;**2;**3;**4") == (";\*\*", "1;**2;**3;**4")
+        assert get_delimiter_nums_string("//[;**][;*]\n1;**2;*3;**4") == (";\*\*|;\*", "1;**2;*3;**4")
+        assert get_delimiter_nums_string("//[;**][**]\n1**2;**3**4") == (";\*\*|\*\*", "1**2;**3**4")
+        assert get_delimiter_nums_string("//[;**][**][***]\n1;**2**3***4") == ("\*\*\*|;\*\*|\*\*", "1;**2**3***4")
 
     def test_verify_numbers(self):
         assert verify_numbers([0]) is True

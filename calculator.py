@@ -7,8 +7,8 @@ def parse_string_nums(nums_string, delimiter=None):
     if not nums_string:
         return [0]
     pattern = r'\n|' + delimiter
-    nums_string = [num for num in re.split(pattern, nums_string) if num]
-    return list(map(int, nums_string))
+    nums_string = [int(num) for num in re.split(pattern, nums_string) if num and int(num) < 1000]
+    return nums_string
 
 
 def get_delimiter_nums_string(nums_string):

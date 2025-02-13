@@ -19,7 +19,15 @@ def get_delimiter_nums_string(nums_string):
     return delimiter, numbers
 
 
+def verify_numbers(numbers):
+    errors = [str(num) for num in numbers if num < 0]
+    if errors:
+        raise ValueError(f"Negatives not allowed {','.join(errors)}")
+    return True
+
+
 def add(nums_string):
     delimiter, nums_string = get_delimiter_nums_string(nums_string)
     numbers = parse_string_nums(nums_string, delimiter)
+    assert verify_numbers(numbers) is True
     return sum(numbers)

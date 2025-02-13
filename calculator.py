@@ -1,7 +1,11 @@
+import re
+
+
 def parse_string_nums(nums_string, separator=","):
     if not nums_string:
         return [0]
-    nums_string = nums_string.strip().split(separator)
+    pattern = r'\n|' + separator
+    nums_string = [num for num in re.split(pattern, nums_string) if num]
     return list(map(int, nums_string))
 
 

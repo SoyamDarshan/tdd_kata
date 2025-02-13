@@ -1,7 +1,7 @@
-def parse_string_nums(nums_string):
+def parse_string_nums(nums_string, separator=","):
     if not nums_string:
         return [0]
-    nums_string = nums_string.strip()
+    nums_string = nums_string.strip().split(separator)
     return list(map(int, nums_string))
 
 
